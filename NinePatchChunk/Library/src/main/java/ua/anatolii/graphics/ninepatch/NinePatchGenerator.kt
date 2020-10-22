@@ -9,6 +9,7 @@ import android.graphics.Rect
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.NinePatchDrawable
 import ua.anatolii.graphics.ninepatch.NinePatchChunk.setupColors
+import kotlin.math.max
 
 /**
  * @author YvesCheung
@@ -24,7 +25,7 @@ fun BitmapDrawable.resizableImageWithCapInsets(
     if (bitmap == null) {
         throw NullPointerException("BitmapDrawable.bitmap is null!")
     }
-    return bitmap.resizableImageWithCapInsets(capInsets)
+    return bitmap.resizableImageWithCapInsets(capInsets, res, srcName)
 }
 
 @JvmOverloads
@@ -47,6 +48,10 @@ fun Bitmap.resizableImageWithCapInsets(
     if (capInsets.top > capInsets.bottom)
         throw IllegalArgumentException(
             "capInsets's bottom should be larger than top, capInsets = $capInsets")
+
+    capInsets.right = max(capInsets.right, capInsets.left + 1)
+    capInsets.bottom = max(capInsets.bottom, capInsets.top + 1)
+
     if (capInsets.left < 0 || capInsets.right >= this.width)
         throw IllegalArgumentException(
             "left..right should be in range[0,${this.width - 1}], capInsets = $capInsets")

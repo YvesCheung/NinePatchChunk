@@ -20,7 +20,7 @@
         android:layout_height="300dp"
         android:layout_margin="16dp"
         android:scaleType="fitXY"
-        tools:src="@drawable/bubble_ninepatch" />
+        tools:src="@drawable/bubble" />
 
     <ImageView
         android:id="@+id/imageView3"

@@ -1,14 +1,13 @@
 package com.huya.mobile.ninepatch
 
+import android.graphics.Bitmap
 import android.graphics.Rect
 import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.util.Log
 import kotlinx.android.synthetic.main.activity_main.*
-import ua.anatolii.graphics.ninepatch.Div
-import ua.anatolii.graphics.ninepatch.NinePatchChunk
 import ua.anatolii.graphics.ninepatch.resizableImageWithCapInsets
+import kotlin.math.roundToInt
 
 /**
  * @author YvesCheung
@@ -20,28 +19,22 @@ class KotlinActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val chunk = resources.assets.open("bubble_ninepatch.9.png").use {
-            NinePatchChunk.createChunkFromRawBitmap(this, it).chunk
-        }
-        val image = resources.assets.open("bubble_ninepatch.9.png").use {
-            NinePatchChunk.create9PatchDrawable(this, it, null)
-        }
-        Log.i("Yves", chunk.toString())
-
         val bitmapDrawable = resources.getDrawable(R.drawable.bubble) as BitmapDrawable
-        val width = bitmapDrawable.bitmap.width
-        val height = bitmapDrawable.bitmap.height
-        val capInsets = Rect(width / 2 + 1, height / 2 - 2, width / 2 + 7, height / 2 + 7)
-        val newChunk = NinePatchChunk.createEmptyChunk()
-        newChunk.xDivs = arrayListOf(Div(capInsets.left, capInsets.right))
-        newChunk.yDivs = arrayListOf(Div(capInsets.top, capInsets.bottom))
-        NinePatchChunk.setupColors(bitmapDrawable.bitmap, bitmapDrawable.bitmap.width, bitmapDrawable.bitmap.height, newChunk)
-        Log.i("Yves", newChunk.toString())
+        var content = bitmapDrawable.bitmap
+        var width = bitmapDrawable.bitmap.width
+        var height = bitmapDrawable.bitmap.height
+        val targetDensity = resources.displayMetrics.densityDpi
+        val densityChange: Float = targetDensity.toFloat() / content.density
+        if (densityChange != 1f) {
+            width = (content.width * densityChange).roundToInt()
+            height = (content.height * densityChange).roundToInt()
+            content = Bitmap.createScaledBitmap(content, width, height, true)
+            content.density = targetDensity
+        }
 
-        val ninePatchDrawable =
-            bitmapDrawable.resizableImageWithCapInsets(capInsets)
-        imageView1.setImageDrawable(image)
-        imageView2.setImageDrawable(image)
-        imageView3.setImageDrawable(image)
+        val capInsets = Rect(width / 2, height / 2, width / 2, height / 2)
+        imageView1.setImageDrawable(content.resizableImageWithCapInsets(capInsets))
+        imageView2.setImageDrawable(content.resizableImageWithCapInsets(capInsets))
+        imageView3.setImageDrawable(content.resizableImageWithCapInsets(capInsets))
     }
 }
