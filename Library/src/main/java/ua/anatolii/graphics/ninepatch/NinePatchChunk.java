@@ -420,11 +420,15 @@ public class NinePatchChunk implements Externalizable {
 		for (Div yDiv : yRegions) {
 			for (Div xDiv : xRegions) {
 				int startX = xDiv.start + 1;
+				int stopX = Math.min(xDiv.stop + 1, bitmapWidth - 1);
 				int startY = yDiv.start + 1;
-				if (hasSameColor(bitmap, startX, xDiv.stop + 1, startY, yDiv.stop + 1)) {
+				int stopY = Math.min(yDiv.stop + 1, bitmapHeight - 1);
+
+				if (hasSameColor(bitmap, startX, stopX, startY, stopY)) {
 					int pixel = bitmap.getPixel(startX, startY);
-					if (isTransparent(pixel))
+					if (isTransparent(pixel)) {
 						pixel = TRANSPARENT_COLOR;
+					}
 					out.colors[colorIndex] = pixel;
 				} else {
 					out.colors[colorIndex] = NO_COLOR;
