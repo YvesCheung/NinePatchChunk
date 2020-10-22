@@ -42,4 +42,12 @@ public final class Div implements Externalizable {
 		output.writeByte(start);
 		output.writeByte(stop);
 	}
+
+	@Override
+	public String toString() {
+		return "Div(" +
+			"start=" + start +
+			", stop=" + stop +
+			')';
+	}
 }

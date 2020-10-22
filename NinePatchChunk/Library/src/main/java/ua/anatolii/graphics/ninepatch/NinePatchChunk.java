@@ -391,7 +391,7 @@ public class NinePatchChunk implements Externalizable {
 		setupStretchableRegions(bitmap, out);
 		setupPadding(bitmap, out);
 
-		setupColors(bitmap, out);
+		setupColors(bitmap, bitmap.getWidth() - 2, bitmap.getHeight() - 2, out);
 		return out;
 	}
 
@@ -410,9 +410,8 @@ public class NinePatchChunk implements Externalizable {
 		}
 	}
 
-	private static void setupColors(Bitmap bitmap, NinePatchChunk out) {
-		int bitmapWidth = bitmap.getWidth() - 2;
-		int bitmapHeight = bitmap.getHeight() - 2;
+	public static void setupColors(Bitmap bitmap, int bitmapWidth, int bitmapHeight,
+							  NinePatchChunk out) {
 		ArrayList<Div> xRegions = getRegions(out.xDivs, bitmapWidth);
 		ArrayList<Div> yRegions = getRegions(out.yDivs, bitmapHeight);
 		out.colors = new int[xRegions.size() * yRegions.size()];
@@ -526,4 +525,14 @@ public class NinePatchChunk implements Externalizable {
 		}
 		return tmpDiv;
 	}
+
+    @Override
+    public String toString() {
+        return "NinePatchChunk{" +
+            "xDivs=" + xDivs +
+            ", yDivs=" + yDivs +
+            ", padding=" + padding +
+            ", colors=" + Arrays.toString(colors) +
+            '}';
+    }
 }
