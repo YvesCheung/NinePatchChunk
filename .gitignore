@@ -33,3 +33,6 @@ gradle-app.setting
 build/
 .gradle/
 **/ui/wrapper/dists/
+.DS_Store
+NinePatchChunk/gradlew
+NinePatchChunk/gradlew.bat
