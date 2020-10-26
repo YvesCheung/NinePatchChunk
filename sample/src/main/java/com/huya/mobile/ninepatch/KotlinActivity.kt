@@ -1,5 +1,6 @@
 package com.huya.mobile.ninepatch
 
+import android.annotation.SuppressLint
 import android.graphics.Rect
 import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
@@ -13,9 +14,13 @@ import ua.anatolii.graphics.ninepatch.resizableImageWithCapInsets
  */
 class KotlinActivity : AppCompatActivity() {
 
+    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        density_text.text = "Density: ${resources.displayMetrics.density},  " +
+            "DensityDpi: ${resources.displayMetrics.densityDpi}"
 
         val bitmapDrawable = resources.getDrawable(R.drawable.bubble) as BitmapDrawable
         val width = bitmapDrawable.bitmap.width
